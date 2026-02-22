@@ -22,13 +22,26 @@ export default function Signup() {
       await signup(form.email, form.password, form.full_name);
       alert("Account created successfully! Please login.");
       navigate("/login");
-    } catch (e) {
-      const msg =
-        e?.response?.data?.detail ||
-        e?.message ||
-        "Signup failed";
-      setError(String(msg));
+    } 
+    catch (e) {
+  let msg = "Signup failed";
+
+  if (e?.response?.data?.detail) {
+    const detail = e.response.data.detail;
+
+    if (Array.isArray(detail)) {
+      // FastAPI validation errors
+      msg = detail.map((err) => err.msg).join(", ");
+    } else if (typeof detail === "string") {
+      // Custom backend error
+      msg = detail;
     }
+  } else if (e?.message) {
+    msg = e.message;
+  }
+
+  setError(msg);
+}
   };
 
   return (
