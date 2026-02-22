@@ -177,16 +177,3 @@ def root():
         "docs": "/docs",
         "redoc": "/redoc"
     }
-    
-from app.scripts.seed_recipes import main as seed_main
-
-print("🌱 Seeding recipes...")
-try:
-    seed_main(
-        create_ingredients=True,
-        backfill_ingredients=True,
-        limit=25000,
-    )
-    print("✅ Seeding completed")
-except Exception as e:
-    print("❌ Seeding failed:", e)
